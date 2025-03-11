@@ -1,5 +1,7 @@
 # TareaEvaDwec05
 
+Para el correcto funcionamiento del proyecto a de ejecutarse el comnado npm install en el directorio raíz del proyecto, y posteriormente ng serve para desplegarlo en el servidor local.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.8.
 
 ## Development server
