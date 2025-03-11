@@ -1,0 +1,75 @@
+<main>
+    <h1>Juego de Adivinación</h1>
+    <form *ngIf="!juegoIniciado" #formConfig="ngForm" (ngSubmit)="recogerDatos()"> 
+      
+      <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" #campoNombre="ngModel" required>
+        <span *ngIf="campoNombre.touched && nombre.trim() === ''" style="display: block; color: red;">
+          El nombre no puede estar vacío
+        </span>
+        <span *ngIf="campoNombre.touched && nombre.trim() !== ''" style="display: block; color: green;">
+          &#10003;
+        </span>
+      </div>
+  
+      <div>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" [(ngModel)]="apellido" #campoApellido="ngModel" required>
+        <span *ngIf="campoApellido.touched && apellido.trim() === ''" style="display: block; color: red;">
+          El apellido no puede estar vacío
+        </span>
+        <span *ngIf="campoApellido.touched && apellido.trim() !== ''" style="display: block; color: green;">
+          &#10003;
+        </span>
+      </div>
+  
+      <div>
+        <label for="maximo">Rango máximo (mínimo 4):</label>
+        <input type="number" id="maximo" name="maximo" [(ngModel)]="maximo" #campoMax="ngModel" required min="4">
+        <span *ngIf="campoMax.touched && (maximo === null || maximo < 4)" style="display: block; color: red;">
+          El número introducido es menor que el rango mínimo
+        </span>
+        <span *ngIf="campoMax.touched && maximo !== null && maximo >= 4" style="display: block; color: green;">
+          &#10003;
+        </span>
+      </div>
+  
+      <div>
+        <label for="intentos">Número de intentos:</label>
+        <input type="number" id="intentos" name="intentos" [(ngModel)]="intentos" #campoIntentos="ngModel" required min="1">
+        <span *ngIf="campoIntentos.touched && (intentos === null || intentos <= 0)" style="display: block; color: red;">
+          El número de intentos es requerido
+        </span>
+        <span *ngIf="campoIntentos.touched && intentos !== null && intentos > 0" style="display: block; color: green;">
+          &#10003;
+        </span>
+      </div>
+  
+      <button type="submit" [disabled]="!formConfig.form.valid">Recoger Datos</button>      
+    </form>  
+
+   
+   <section *ngIf="juegoIniciado">
+    <p>Ongi Etorri {{ nombre | titlecase }} {{ apellido | titlecase }}</p>
+    
+    <div>
+      <label for="numeroAdivinar">Ingresa tu número:</label>
+      <input type="number" id="numeroAdivinar" name="numeroAdivinar" [(ngModel)]="numeroAdivinar" [disabled]="juegoTerminado">
+    </div>
+    
+    <button (click)="comprobarNumero()" [disabled]="juegoTerminado">Enviar</button>
+    
+    <p *ngIf="mensajeFeedback" [ngStyle]="{'color': 
+        mensajeFeedback === 'Has Ganado' ? 'green' : 
+        mensajeFeedback === 'Caliente' ? 'red' : 
+        mensajeFeedback === 'Templado' ? 'orange' : 
+        mensajeFeedback === 'Frío' ? 'blue' : 'inherit'}">
+      {{ mensajeFeedback }}
+    </p> 
+    
+    <p *ngIf="!juegoTerminado">Intentos restantes: {{ intentosRestantes }}</p>
+
+    <button *ngIf="juegoTerminado" (click)="volverAJugar()">Volver a Jugar</button>
+  </section>
+</main>
